@@ -10,7 +10,7 @@ let morgan = require('morgan');
 let app = express();
 
 let mongoose = require('mongoose');
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/expresschat');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://127.0.0.1/gamedb');
 
 app.set('view engine', 'jade');
 

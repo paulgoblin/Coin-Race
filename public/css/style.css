@@ -1,3 +1,16 @@
 #userImage {
   max-width: 100px;
 } 
+
+.gameboard {
+  border: 1px solid red;
+}
+
+.square {
+  /*border: 1px solid black;*/
+  background: green;
+  height: 40px;
+  width: 40px;
+  display: inline-block;
+}
+

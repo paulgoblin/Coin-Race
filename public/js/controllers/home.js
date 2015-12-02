@@ -1,16 +1,19 @@
 'use strict';
 
 app.controller('homeCtrl', function($scope, $rootScope, $http) {
-  $http.get('/user')
-  .then(function(resp) {
-    console.log(resp);
-    $scope.user = resp.data;
+
+  // create game board
+  var boardDim = 12;
+  var countArr = new Array(boardDim).fill();
+  var $gameboard = $('<div>').addClass('gameboard');
+  countArr.forEach(function(_,index){
+    var $row = countArr.map(() => $('<div>').addClass('square'));
+    $gameboard.append($row);
+  })
+  console.log('boardSquares', $gameboard)
+
+  $('.game').append($gameboard)
 
 
-    $http.get('/users')
-    .then(function(resp) {
-      console.log(resp.data);
-      $scope.users = resp.data;
-    });
-  });
+
 });
