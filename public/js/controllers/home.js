@@ -1,19 +1,17 @@
 'use strict';
 
-app.controller('homeCtrl', function($scope, $rootScope, $http, socket) {
-  // create game board
-  var boardDim = 12;
-  var countArr = new Array(boardDim).fill();
-  var $gameboard = $('<div>').addClass('gameboard');
-  countArr.forEach(function(_,index){
-    var $row = countArr.map(() => $('<div>').addClass('square'));
-    $gameboard.append($row);
-  })
-  console.log('boardSquares', $gameboard)
+app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc, userService) {
+
+  userService.get().then(function(resp) {
+    $scope.user = resp.data;  
+    console.log($scope.user);
+  }); 
+
+  var $gameboard = gameSrvc.createBoard();
 
   $('.game').append($gameboard)
 
-  socket.on('hello', function(message) {
-    console.log(message);
+  socket.on('changeState', function(state) {
+    console.log(state);
   });
 });
