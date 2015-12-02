@@ -2,9 +2,12 @@
 
 app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc, userService) {
 
+  $scope.showBoard = false;
+
   userService.get().then(function(resp) {
     $scope.user = resp.data;  
-    console.log($scope.user);
+    $scope.showBoard = true;
+    $scope.makeMove($scope.user, null)
   }); 
 
   var $gameboard = gameSrvc.createBoard();
@@ -12,6 +15,15 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   $('.game').append($gameboard)
 
   socket.on('changeState', function(state) {
-    console.log(state);
+    $gameboard = gameSrvc.drawBoard(state);
+    var $game = $('.game');
+    console.log('game', $gameboard)
+    $game.empty();
+    $game.append($gameboard);
   });
+
+  $scope.makeMove = function(user, action) {
+    socket.emit('changeState', gameSrvc.changeState(user, null));
+  }
+
 });

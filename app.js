@@ -37,6 +37,10 @@ var io = require('socket.io')(server);
 var state = {}; 
 io.on('connection', function(socket) {
   socket.emit('changeState', state);
+  socket.on('changeState', function(state){
+    console.log('this is the new state', state);
+    io.emit('changeState', state)
+  })
 });
 
 server.listen(PORT);
