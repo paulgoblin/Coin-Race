@@ -2,6 +2,8 @@
 
 app.controller('homeCtrl', function($scope, $rootScope, $http) {
 
+  
+
   // create game board
   var boardDim = 12;
   var countArr = new Array(boardDim).fill();

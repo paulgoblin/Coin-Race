@@ -2,7 +2,6 @@
 
 app.controller('NavCtrl', function($scope, $auth, $state) {
 
-  console.log('hello')
   $scope.isAuthenticated = function() {
     return $auth.isAuthenticated(); 
   };
