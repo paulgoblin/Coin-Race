@@ -1,0 +1,17 @@
+extends ./layout.jade 
+
+block content
+  nav(ng-controller='NavCtrl').navbar.navbar-default
+    nav.navbar-header
+      .container-fluid
+        a.navbar-brand(href='#') Bookmarks
+    div(ng-if='isAuthenticated()').collapse.navbar-collapse
+      ul.nav.navbar-nav
+        li
+          a(href='#') Profile
+        li
+          a(href='#') Messages
+      form.navbar-form.navbar-left(role='logout')
+        .form-group
+          button.btn.btn-default(ng-click='logout()') Logout
+  ui-view
