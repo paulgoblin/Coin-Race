@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('MyApp', ['satellizer', 'ui.router']);
+var app = angular.module('MyApp', ['satellizer', 'ui.router', 'btford.socket-io']);
 
 app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
   $urlRouterProvider.otherwise('/');
@@ -13,3 +13,7 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
   });
 });
 
+app.factory('socket', function(socketFactory) {
+  var socket = io.connect('http://localhost:3000');
+  return socketFactory({ ioSocket: socket });
+}); 
