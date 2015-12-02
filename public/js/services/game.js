@@ -3,10 +3,11 @@
 app.service('gameSrvc', function(){
 
   this.state = {};
+  this.$emptyBoard = null;
 
   //BOARD PARAMS
   var boardDim = 30;  // number of square per row
-  var squareSize = 3; // in px
+  var squareSize = 2; // in px
   var squareCss = {
     width: squareSize + 'vh',
     height: squareSize + 'vh'
@@ -16,8 +17,6 @@ app.service('gameSrvc', function(){
     width: boardSize + 'vh',
     height: boardSize + 'vh'
   }
-
-  this.$emptyBoard = null;
 
   //CREATE BOARD
   this.createBoard = () => {
@@ -32,40 +31,85 @@ app.service('gameSrvc', function(){
     return this.$emptyBoard;
   }
 
-
+  // for drawing item types
   this.typeDict = {
-    me: '{background-color: red}'
+    me: {
+      attr: 'background-color',
+      val: 'red'
+    }
   }
-
 
   //DRAW BOARD
   this.drawBoard = (state) => {
+    this.state = state;
     var $newBoard = this.$emptyBoard.clone();
-    console.log('new board', $newBoard)
     this.state = state;
     for (var key in this.state) {
       var item = state[key];
-      var row = item.co[0];
-      var col = item.co[1];
-      console.log('found board',$newBoard.find(`#${row}-${col}`))
-      $newBoard.find(`#${row}-${col}`).css("background-color", 'red');
+      var row = item.row;
+      var col = item.col;
+      $newBoard.find(`#${row}-${col}`).css(this.typeDict[item.type].attr , this.typeDict[item.type].val);
     }
     return $newBoard;
   }
 
+
+  // for mapping keys to actions
+  this.actionDict = {
+    37: 'moveLeft',
+    38: 'moveUp',
+    39: 'moveRight',
+    40: 'moveDown',
+
+  }
+
   //CHANGE STATE
-  this.changeState = (user, action) => {
+  this.changeState = (user, command) => {
+
     if (!this.state[user._id]) {
       var row = Math.floor(Math.random()*boardDim);
       var col = Math.floor(Math.random()*boardDim);
-      user.co = [row, col]; // give random coordinates
+      user.row = row; // give random coordinates
+      user.col = col; // give random coordinates
       user.type = 'me';
-      console.log('creating user at ', user.co);
+      console.log('creating user at ', user.col, user.row);
       this.state[user._id] = user;
       return this.state;
     }
+
+    var action = this.actionDict[command];
+    if (!action) return;
+
+    switch(action) {
+      case 'moveLeft':
+        user.col = (user.col === 0) ? user.col : user.col - 1;
+        break;
+      case 'moveUp':
+        user.row = (user.row === 0) ? user.row : user.row - 1;
+        break;
+      case 'moveRight':
+        user.col = (user.col === boardDim-1) ? user.col : user.col + 1;
+        break;
+      case 'moveDown':
+        user.row = (user.row === boardDim-1) ? user.row : user.row + 1;
+        break;
+      default:
+        console.log('other moves')
+    }
+
+    this.state[user._id] = user;
+
+    return this.state;
 
   }
 
 
 });
+
+
+
+
+
+
+
+
