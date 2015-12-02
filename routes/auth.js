@@ -22,14 +22,12 @@ router.post('/facebook', function(req, res) {
 
   // Step 1. Exchange authorization code for access token.
   request.get({ url: accessTokenUrl, qs: params, json: true }, function(err, response, accessToken) {
-    console.log('accessTokenUrl: ', accessTokenUrl, params)
     if (response.statusCode !== 200) {
       return res.status(500).send({ message: accessToken.error.message });
     }
 
     // Step 2. Retrieve profile information about the current user.
     request.get({ url: graphApiUrl, qs: accessToken, json: true }, function(err, response, profile) {
-      console.log('facebook profile:', profile);
       if (response.statusCode !== 200) {
         return res.status(500).send({ message: profile.error.message });
       }
@@ -47,6 +45,7 @@ router.post('/facebook', function(req, res) {
             user.facebook = profile.id;
             user.picture = user.picture || 'https://graph.facebook.com/v2.3/' + profile.id + '/picture?type=large';
             user.displayName = user.displayName || profile.name;
+            console.log('saving user', user)
             user.save(function() {
               var token = user.createJWT();
               res.send({ token: token });
@@ -64,6 +63,7 @@ router.post('/facebook', function(req, res) {
           user.facebook = profile.id;
           user.picture = 'https://graph.facebook.com/' + profile.id + '/picture?type=large';
           user.displayName = profile.name;
+          console.log('saving user', user)
           user.save(function() {
             var token = user.createJWT();
             res.send({ token: token });
