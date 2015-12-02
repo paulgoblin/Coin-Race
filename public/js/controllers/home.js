@@ -1,9 +1,6 @@
 'use strict';
 
-app.controller('homeCtrl', function($scope, $rootScope, $http) {
-
-  
-
+app.controller('homeCtrl', function($scope, $rootScope, $http, socket) {
   // create game board
   var boardDim = 12;
   var countArr = new Array(boardDim).fill();
@@ -16,6 +13,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http) {
 
   $('.game').append($gameboard)
 
-
-
+  socket.on('hello', function(message) {
+    console.log(message);
+  });
 });

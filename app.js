@@ -38,10 +38,10 @@ io.on('connection', function(socket) {
   socket.emit('hello', 'history');
 });
 
+server.listen(PORT);
 
-
-app.listen(PORT, () => {
-  console.log('Listening on port ', PORT);
-});
+// app.listen(PORT, () => {
+//   console.log('Listening on port ', PORT);
+// });
 
 
