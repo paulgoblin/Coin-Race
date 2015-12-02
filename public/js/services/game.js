@@ -78,7 +78,7 @@ app.service('gameSrvc', function(){
     }
 
     var action = this.actionDict[command];
-    if (!action) return;
+    if (!action) return this.state;
 
     switch(action) {
       case 'moveLeft':
