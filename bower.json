@@ -17,6 +17,10 @@
   ],
   "dependencies": {
     "bootswatch": "~3.3.6",
-    "jquery": "~2.1.4"
+    "jquery": "~2.1.4",
+    "font-awesome": "~4.5.0",
+    "angular": "~1.4.8",
+    "angular-ui-router": "ui-router#~0.2.15",
+    "satellizer": "~0.13.1"
   }
 }

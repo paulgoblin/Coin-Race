@@ -6,6 +6,7 @@ let PORT = process.env.PORT || 3000;
 let express = require('express');
 let bodyParser = require('body-parser');
 let morgan = require('morgan');
+var http = require('http');
 
 let app = express();
 
@@ -28,6 +29,16 @@ app.use('/auth', require('./routes/auth'));
 app.use((req, res) => {
   res.status(404).render('404')
 });
+
+//SOCKET
+var server = http.Server(app);
+var io = require('socket.io')(server);
+
+io.on('connection', function(socket) {
+  socket.emit('hello', 'history');
+});
+
+
 
 app.listen(PORT, () => {
   console.log('Listening on port ', PORT);
