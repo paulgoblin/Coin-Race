@@ -34,8 +34,9 @@ app.use((req, res) => {
 var server = http.Server(app);
 var io = require('socket.io')(server);
 
+var state = {}; 
 io.on('connection', function(socket) {
-  socket.emit('hello', 'history');
+  socket.emit('changeState', state);
 });
 
 server.listen(PORT);
