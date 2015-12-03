@@ -42,7 +42,7 @@ var stateInfo = {
 
 var latency = 100;  // state emission latency
 var boardDim = 30;  // also change in game service!!!!!!!
-var maxCoins = 2;
+var maxCoins = 5;
 
 var state = {}; 
 
@@ -86,9 +86,10 @@ io.on('connection', function(socket) {
     stateInfo.coin++;
   }
 
+  addCoin(boardDim);
+
   var coinAtInterval = function() {
-    // var rand = Math.round(Math.random() * (20000 - 5000)) + 5000;
-    var rand = 10;
+    var rand = Math.round(Math.random() * (40000 - 5000)) + 5000;
     setTimeout(function() {
       if (stateInfo.player > 0 && stateInfo.coin < maxCoins) {
         addCoin(boardDim);

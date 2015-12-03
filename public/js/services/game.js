@@ -3,13 +3,15 @@
 app.service('gameSrvc', function(){
 
   this.coinCollected = null;
+  this.players = null;
 
   this.reset = () => {
     this.state = {};
     this.meId = null;
     this.user = null;
+    this.coinCollected = null;
+    this.players = null;
     this.$emptyBoard = null;
-    console.log('reset game', this.state, this.meId, this.user)
   }
 
   this.reset();
@@ -59,7 +61,9 @@ app.service('gameSrvc', function(){
       }
       $newBoard.find(`#${row}-${col}`).addClass(type);
     }
-    return $newBoard;
+    var $game = $('.game');
+    $game.empty();
+    $game.append($newBoard);
   }
 
 
@@ -109,16 +113,22 @@ app.service('gameSrvc', function(){
     return this.state;
   }
 
-
-
-
-
-
-  
-
   //UTIL
+  this.updatePlayers = (state) => {
+    this.players = [];
+    for (var key in this.state) {
+      var item = this.state[key];
+      var type = item.type;
+      if (type === 'player') {
+        this.players.push(item);
+      }
+    }
+    return this.players;
+  }
+
+
+
   this.checkForCoin = (user) => {
-    console.log('my state on coin check', this.state)
 
     for (var key in this.state) {
       var item = this.state[key];

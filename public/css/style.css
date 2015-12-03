@@ -15,6 +15,9 @@
   display: inline-block;
 }
 
+.scoreTable{
+  width: 50%;
+}
 
 /*   GAME ITEM TYPES  */
 .player {
