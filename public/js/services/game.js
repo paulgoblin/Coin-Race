@@ -2,6 +2,8 @@
 
 app.service('gameSrvc', function(){
 
+  this.coinCollected = null;
+
   this.reset = () => {
     this.state = {};
     this.meId = null;
@@ -38,22 +40,6 @@ app.service('gameSrvc', function(){
     return this.$emptyBoard;
   }
 
-  // // for drawing item types
-  // this.typeDict = {
-  //   me: {
-  //     attr: 'background-color',
-  //     val: 'red'
-  //   },
-  //   player: {
-  //     attr: 'background-color',
-  //     val: 'white'
-  //   }
-  //   coin: {
-  //     attr: 'background-color',
-  //     val: 'yellow'
-  //   }
-  // }
-
   //DRAW BOARD
   this.drawBoard = (state) => {
     // console.log('drawing state', state)
@@ -88,23 +74,16 @@ app.service('gameSrvc', function(){
 
   //CHANGE STATE
   this.changeState = (user, command) => {
-    // console.log('state and user id before initialize: ', this.state, user._id)
+
     // initialize user
     if (!this.state[user._id]) {
-      // console.log('state before initialize', this.state)
       var row = Math.floor(Math.random()*boardDim);
       var col = Math.floor(Math.random()*boardDim);
       user.row = row; // give random coordinates
       user.col = col; // give random coordinates
       user.type = "player";
-      // console.log('creating user at ', user.col, user.row);
       this.state[user._id] = user;
-      // console.log('state after initialize', this.state)
-      return this.state;
     }
-
-    // this.user = this.state[user._id];
-    // console.log('stored user', this.user )
 
     var action = this.actionDict[command];
     if (!action) return this.state;
@@ -122,13 +101,38 @@ app.service('gameSrvc', function(){
       case 'moveDown':
         user.row = (user.row === boardDim-1) ? user.row : user.row + 1;
         break;
-      default:
-        // console.log('other moves')
     }
-    // this.user = user;
+
+    user = this.checkForCoin(user);
+
     this.state[user._id] = user;
     return this.state;
   }
+
+  //UTIL
+  this.checkForCoin = (user) => {
+    console.log('my state on coin check', this.state)
+
+    for (var key in this.state) {
+      var item = this.state[key];
+      var type = item.type;
+      if ( item.col === user.col && item.row === user.row && type === 'coin') {
+        console.log('user before coin', typeof user.coins)
+        this.coinCollected = key;
+        if (user.coins) {
+          user.coins++
+        } else {
+          user.coins = 1;
+        }
+        console.log('user after coin', user.coins)
+        delete this.state[key];
+      }
+    }
+    return user;
+  }
+
+
+
 
 });
 

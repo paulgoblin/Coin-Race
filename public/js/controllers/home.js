@@ -37,7 +37,8 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   // emit new game state
   $scope.makeMove = function(user, action) {
     console.log('making move')
-    socket.emit('changeState', gameSrvc.changeState(user, action), gameSrvc.meId);
+    socket.emit('changeState', gameSrvc.changeState(user, action), gameSrvc.meId, gameSrvc.coinCollected);
+    gameSrvc.coinCollected = null;
   }
 
   // Listen for actions
