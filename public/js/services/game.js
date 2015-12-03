@@ -44,13 +44,11 @@ app.service('gameSrvc', function(){
 
   //DRAW BOARD
   this.drawBoard = (state) => {
-    // console.log('drawing state', state)
     this.state = state;
     var $newBoard = this.$emptyBoard.clone();
     this.state = state;
     for (var key in this.state) {
       var item = state[key];
-      // console.log('drawing item', item, state)
       var row = item.row;
       var col = item.col;
       if(key === this.meId) {
@@ -134,14 +132,12 @@ app.service('gameSrvc', function(){
       var item = this.state[key];
       var type = item.type;
       if ( item.col === user.col && item.row === user.row && type === 'coin') {
-        console.log('user before coin', typeof user.coins)
         this.coinCollected = key;
         if (user.coins) {
           user.coins++
         } else {
           user.coins = 1;
         }
-        console.log('user after coin', user.coins)
         delete this.state[key];
       }
     }
