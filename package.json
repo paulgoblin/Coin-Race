@@ -1,7 +1,7 @@
 {
-  "name": "chat-express",
+  "name": "social-game",
   "version": "1.0.0",
-  "description": "Chat Using The MEAN Stack",
+  "description": "a simple realtime multiplayer game demo",
   "main": "app.js",
   "scripts": {
     "setup": "rm -rf public/vendor node_modules && npm i && bower i",
@@ -13,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/rlm14/chat-express.git"
+    "url": "git+https://github.com/paulgoblin/game.git"
   },
-  "author": "Robbie McClellan",
+  "author": "Robbie McClellan and Paul Richter",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/rlm14/chat-express/issues"
+    "url": "https://github.com/paulgoblin/game/issues"
   },
-  "homepage": "https://github.com/rlm14/chat-express#readme",
+  "homepage": "https://github.com/paulgoblin/game#readme",
   "dependencies": {
     "body-parser": "^1.14.1",
     "bower": "^1.6.8",
