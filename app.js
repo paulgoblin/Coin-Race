@@ -34,21 +34,26 @@ app.use((req, res) => {
 var server = http.Server(app);
 var io = require('socket.io')(server);
 
-var latency = 100
+var latency = 100;
 
 var state = {}; 
 io.on('connection', function(socket) {
   console.log('state on conection: ',state)
 
   socket.on('changeState', function(newState, userId){
-    io.emit('changeState', state);
     state[userId] = newState[userId];
+    io.emit('changeState', state);
     // io.emit('changeState', state)
   })
 
   socket.on('requestState', function (){
     console.log('emitting state', state)
     socket.emit('fulfillRequest', state);
+  })
+
+  socket.on('logout', function(logoutId){
+    delete state[logoutId];
+    console.log('loggedout player', logoutId, state);
   })
 
   var stateEmitInterval = setInterval(function(){
