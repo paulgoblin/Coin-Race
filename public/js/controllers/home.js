@@ -31,7 +31,6 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   // emit new game state
   $scope.makeMove = function(user, action) {
     socket.emit('changeState', gameSrvc.changeState(user, action), gameSrvc.meId, gameSrvc.coinCollected);
-    gameSrvc.drawBoard(gameSrvc.state); // optimistic updating
     gameSrvc.coinCollected = null;
   }
 
