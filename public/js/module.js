@@ -14,6 +14,6 @@ app.config(function($stateProvider, $urlRouterProvider, $authProvider) {
 });
 
 app.factory('socket', function(socketFactory) {
-  var socket = io.connect('http://localhost:3000');
+  var socket = io.connect(window.location.hostname);
   return socketFactory({ ioSocket: socket });
 }); 
