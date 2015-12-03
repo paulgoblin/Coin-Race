@@ -126,8 +126,3 @@ io.on('connection', function(socket) {
 
 server.listen(PORT);
 
-// app.listen(PORT, () => {
-//   console.log('Listening on port ', PORT);
-// });
-
-

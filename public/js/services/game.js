@@ -109,6 +109,13 @@ app.service('gameSrvc', function(){
     return this.state;
   }
 
+
+
+
+
+
+  
+
   //UTIL
   this.checkForCoin = (user) => {
     console.log('my state on coin check', this.state)
