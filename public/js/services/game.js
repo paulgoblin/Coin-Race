@@ -6,11 +6,11 @@ app.service('gameSrvc', function(){
     this.state = {};
     this.meId = null;
     this.user = null;
+    this.$emptyBoard = null;
     console.log('reset game', this.state, this.meId, this.user)
   }
 
   this.reset();
-  this.$emptyBoard = null;
 
   //BOARD PARAMS
   var boardDim = 30;  // number of square per row
@@ -38,17 +38,21 @@ app.service('gameSrvc', function(){
     return this.$emptyBoard;
   }
 
-  // for drawing item types
-  this.typeDict = {
-    me: {
-      attr: 'background-color',
-      val: 'red'
-    },
-    player: {
-      attr: 'background-color',
-      val: 'white'
-    }
-  }
+  // // for drawing item types
+  // this.typeDict = {
+  //   me: {
+  //     attr: 'background-color',
+  //     val: 'red'
+  //   },
+  //   player: {
+  //     attr: 'background-color',
+  //     val: 'white'
+  //   }
+  //   coin: {
+  //     attr: 'background-color',
+  //     val: 'yellow'
+  //   }
+  // }
 
   //DRAW BOARD
   this.drawBoard = (state) => {
@@ -61,13 +65,13 @@ app.service('gameSrvc', function(){
       // console.log('drawing item', item, state)
       var row = item.row;
       var col = item.col;
-      if(item._id === this.meId) {
+      if(key === this.meId) {
         this.user = item;
         var type = "me"
       } else {
         var type = item.type; 
       }
-      $newBoard.find(`#${row}-${col}`).css(this.typeDict[type].attr , this.typeDict[type].val);
+      $newBoard.find(`#${row}-${col}`).addClass(type);
     }
     return $newBoard;
   }
