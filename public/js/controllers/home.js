@@ -7,9 +7,9 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
 
   //initialize user
   userService.get().then(function(resp) {
-    $scope.user = resp.data; 
-    gameSrvc.meId = $scope.user._id; 
-    gameSrvc.user = $scope.user;
+    $scope.user = resp.data;
+    gameSrvc.user = resp.data;
+    gameSrvc.meId = resp.data._id; 
     $scope.showBoard = true;
     socket.emit('requestState')
   }); 
@@ -26,7 +26,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
 
   //listen for new game state
   socket.on('changeState', function(state) {
-    console.log("change state recieved", state)
+    // console.log("change state recieved", state)
     $gameboard = gameSrvc.drawBoard(state);
     var $game = $('.game');
 
@@ -37,14 +37,14 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   // emit new game state
   $scope.makeMove = function(user, action) {
     console.log('making move')
-    socket.emit('changeState', gameSrvc.changeState(user, action));
+    socket.emit('changeState', gameSrvc.changeState(user, action), gameSrvc.meId);
   }
 
   // Listen for actions
   $("body").on("keydown", command);
 
   function command(event) {
-    console.log("moving char", $scope.user, event.which)
+    console.log("moving char", gameSrvc.user, event.which)
     $scope.makeMove($scope.user, event.which)
   }
 

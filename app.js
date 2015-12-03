@@ -34,25 +34,27 @@ app.use((req, res) => {
 var server = http.Server(app);
 var io = require('socket.io')(server);
 
+var latency = 100
+
 var state = {}; 
 io.on('connection', function(socket) {
   console.log('state on conection: ',state)
-  // io.emit('changeState', state);
-  socket.on('changeState', function(newState){
-    console.log('this is the new state', newState);
-    state = newState;
+
+  socket.on('changeState', function(newState, userId){
+    io.emit('changeState', state);
+    state[userId] = newState[userId];
     // io.emit('changeState', state)
   })
-
-  var stateEmitInterval = setInterval(function(){
-    console.log('emitting state', state);
-    io.emit('changeState', state);
-  },100)
 
   socket.on('requestState', function (){
     console.log('emitting state', state)
     socket.emit('fulfillRequest', state);
   })
+
+  var stateEmitInterval = setInterval(function(){
+    // console.log('emitting state', state);
+    io.emit('changeState', state);
+  },latency)
 
 });
 
