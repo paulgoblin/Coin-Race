@@ -15,3 +15,14 @@
   display: inline-block;
 }
 
+
+/*   GAME ITEM TYPES  */
+.player {
+  background-color: white;
+}
+.me {
+  background-color: red;
+}
+.coin {
+  background-color: yellow;
+}

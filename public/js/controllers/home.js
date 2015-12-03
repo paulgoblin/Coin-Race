@@ -16,7 +16,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
 
   socket.on('fulfillRequest', function(state){
     gameSrvc.state = state;
-    console.log('moving user', state, state[gameSrvc.meId], state, gameSrvc.user)
+    // console.log('moving user', state, state[gameSrvc.meId], state, gameSrvc.user)
     // gameSrvc.user =  state[gameSrvc.meId] || gameSrvc.user ;
     $scope.makeMove(gameSrvc.user, null);
   })
@@ -49,7 +49,8 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   }
 
   $(window).on('beforeunload',function(){
-    socket.emit('logout', gameSrvc.meId)
+    socket.emit('logout', gameSrvc.meId);
+    socket.disconnect();
     gameSrvc.reset();
   })
 

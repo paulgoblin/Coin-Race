@@ -34,34 +34,75 @@ app.use((req, res) => {
 var server = http.Server(app);
 var io = require('socket.io')(server);
 
-var latency = 100;
+var numPlayers = 0;
+
+var latency = 100;  // state emission latency
+var boardDim = 30;  // also change in game service!!!!!!!
 
 var state = {}; 
 io.on('connection', function(socket) {
   console.log('state on conection: ',state)
 
+
+  // CLIENT LISTENERS
   socket.on('changeState', function(newState, userId){
     state[userId] = newState[userId];
     io.emit('changeState', state);
     // io.emit('changeState', state)
   })
-
   socket.on('requestState', function (){
-    console.log('emitting state', state)
+    numPlayers++;
+    console.log('numPlayers', numPlayers)
+    console.log('emitting state', state);
     socket.emit('fulfillRequest', state);
   })
-
   socket.on('logout', function(logoutId){
     delete state[logoutId];
     console.log('loggedout player', logoutId, state);
   })
+  socket.on('disconnect', function(){
+    numPlayers--;
+    console.log('numPlayers', numPlayers)
+    console.log('client disconnected')
+  })
 
+  // STATE EMITER
   var stateEmitInterval = setInterval(function(){
     // console.log('emitting state', state);
     io.emit('changeState', state);
-  },latency)
+  },latency);
 
-});
+
+
+  // // COIN GENERATOR
+  // var addCoin = function(dim){
+  //   var row = Math.floor(Math.random()*dim);
+  //   var col = Math.floor(Math.random()*dim);
+  //   var coin = {};
+  //   coin.row = row;
+  //   coin.col = col;
+  //   coin.type = "coin";
+  //   state[date.now()] = coin;
+  // }
+
+  // var coinAtInterval = function() {
+  //   var rand = Math.round(Math.random() * (5000 - 500)) + 500;
+  //   setTimeout(function() {
+  //     addCoin(boardDim);
+  //     if (numPlayers>0) {
+  //       coinAtInterval();
+  //     }  
+  //   }, rand);
+  // };
+
+  // var checkPlayersInterval = setInterval(function(){
+  //   if(numPlayers<1) return;
+  //   coinAtInterval()
+  // },1000);
+
+
+});  // io.on('connection'
+
 
 server.listen(PORT);
 
