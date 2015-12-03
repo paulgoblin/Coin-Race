@@ -36,11 +36,18 @@ var io = require('socket.io')(server);
 
 var state = {}; 
 io.on('connection', function(socket) {
-  socket.emit('changeState', state);
-  socket.on('changeState', function(state){
-    console.log('this is the new state', state);
+  console.log('state on conection: ',state)
+  // io.emit('changeState', state);
+  socket.on('changeState', function(newState){
+    console.log('this is the new state', newState);
+    state = newState;
     io.emit('changeState', state)
   })
+
+  socket.on('requestState', function (){
+    socket.emit('fulfillRequest', state);
+  })
+
 });
 
 server.listen(PORT);
