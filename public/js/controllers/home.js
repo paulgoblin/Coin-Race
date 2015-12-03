@@ -48,5 +48,10 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
     $scope.makeMove($scope.user, event.which)
   }
 
+  $(window).on('beforeunload',function(){
+    socket.emit('logout', gameSrvc.meId)
+    gameSrvc.reset();
+  })
+
 
 });
