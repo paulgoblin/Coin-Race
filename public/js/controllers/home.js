@@ -3,11 +3,11 @@
 app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc, userService) {
 
   $scope.showBoard = false;
-  $scope.user = null;
+  // $scope.user = null;
 
   //initialize user
   userService.get().then(function(resp) {
-    $scope.user = resp.data;
+    // $scope.user = resp.data;
     gameSrvc.user = resp.data;
     gameSrvc.meId = resp.data._id; 
     $scope.showBoard = true;
@@ -24,6 +24,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
 
   //listen for new game state
   socket.on('changeState', function(state) {
+    state[gameSrvc.meId] = gameSrvc.user;
     gameSrvc.drawBoard(state);
     $scope.players = gameSrvc.updatePlayers(state);
   });
@@ -31,6 +32,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   // emit new game state
   $scope.makeMove = function(user, action) {
     socket.emit('changeState', gameSrvc.changeState(user, action), gameSrvc.meId, gameSrvc.coinCollected);
+    gameSrvc.drawBoard(gameSrvc.state); // optimistic updating
     gameSrvc.coinCollected = null;
   }
 
@@ -38,7 +40,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   $("body").on("keydown", command);
 
   function command(event) {
-    $scope.makeMove($scope.user, event.which)
+    $scope.makeMove(gameSrvc.user, event.which)
   }
 
   $(window).on('beforeunload',function(){

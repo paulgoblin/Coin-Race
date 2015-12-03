@@ -43,6 +43,7 @@ var stateInfo = {
 var latency = 100;  // state emission latency
 var boardDim = 30;  // also change in game service!!!!!!!
 var maxCoins = 5;
+var coinTimer = 0;
 
 var state = {}; 
 
@@ -76,11 +77,9 @@ io.on('connection', function(socket) {
 
   // COIN GENERATOR
   var addCoin = function(dim){
-    var row = Math.floor(Math.random()*dim);
-    var col = Math.floor(Math.random()*dim);
     var coin = {};
-    coin.row = row;
-    coin.col = col;
+    coin.row = Math.floor(Math.random()*dim);;
+    coin.col = Math.floor(Math.random()*dim);;
     coin.type = "coin";
     state[Date.now()] = coin;
     stateInfo.coin++;
@@ -89,17 +88,22 @@ io.on('connection', function(socket) {
   addCoin(boardDim);
 
   var coinAtInterval = function() {
-    var rand = Math.round(Math.random() * (40000 - 5000)) + 5000;
-    setTimeout(function() {
+    var rand = Math.round(Math.random() * (10000 - 1000)) + 1000;
+    coinTimer = setTimeout(function() {
       if (stateInfo.player > 0 && stateInfo.coin < maxCoins) {
         addCoin(boardDim);
         coinAtInterval();
-      }  
+      }
+      coinTimer = 0;
     }, rand);
   };
 
   var checkPlayersInterval = setInterval(function(){
     updateStateInfo(state); // count number of players/coins/etc
+    if(coinTimer){
+      console.log('timer not restring ')
+      return;
+    }
     if(stateInfo.player < 1) return;
     if(stateInfo.coin > maxCoins) return;
     coinAtInterval()
