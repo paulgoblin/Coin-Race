@@ -2,11 +2,16 @@
 
 app.service('gameSrvc', function(){
 
-  this.state = {};
+  this.reset = () => {
+    this.state = {};
+    this.meId = null;
+    this.user = null;
+    console.log('reset game', this.state, this.meId, this.user)
+  }
+
+  this.reset();
   this.$emptyBoard = null;
-  this.meId = null;
-  this.user = null;
-  
+
   //BOARD PARAMS
   var boardDim = 30;  // number of square per row
   var squareSize = 2; // in vh
@@ -118,11 +123,8 @@ app.service('gameSrvc', function(){
     }
     // this.user = user;
     this.state[user._id] = user;
-
     return this.state;
-
   }
-
 
 });
 
