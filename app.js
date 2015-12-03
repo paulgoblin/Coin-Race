@@ -41,10 +41,16 @@ io.on('connection', function(socket) {
   socket.on('changeState', function(newState){
     console.log('this is the new state', newState);
     state = newState;
-    io.emit('changeState', state)
+    // io.emit('changeState', state)
   })
 
+  var stateEmitInterval = setInterval(function(){
+    console.log('emitting state', state);
+    io.emit('changeState', state);
+  },100)
+
   socket.on('requestState', function (){
+    console.log('emitting state', state)
     socket.emit('fulfillRequest', state);
   })
 
