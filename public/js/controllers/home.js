@@ -16,9 +16,9 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
 
   socket.on('fulfillRequest', function(state){
     gameSrvc.state = state;
-    // gameSrvc.user =  state[$scope._id] || gameSrvc.user ;
-    console.log('moving user', $scope.user)
-    $scope.makeMove($scope.user, null);
+    console.log('moving user', state, state[gameSrvc.meId], state, gameSrvc.user)
+    // gameSrvc.user =  state[gameSrvc.meId] || gameSrvc.user ;
+    $scope.makeMove(gameSrvc.user, null);
   })
 
   //initialize gameboard
@@ -36,6 +36,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
 
   // emit new game state
   $scope.makeMove = function(user, action) {
+    console.log('making move')
     socket.emit('changeState', gameSrvc.changeState(user, action));
   }
 

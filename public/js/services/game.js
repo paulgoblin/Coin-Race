@@ -47,13 +47,13 @@ app.service('gameSrvc', function(){
 
   //DRAW BOARD
   this.drawBoard = (state) => {
-    console.log('drawing state', state)
+    // console.log('drawing state', state)
     this.state = state;
     var $newBoard = this.$emptyBoard.clone();
     this.state = state;
     for (var key in this.state) {
       var item = state[key];
-      console.log('drawing item', item, state)
+      // console.log('drawing item', item, state)
       var row = item.row;
       var col = item.col;
       if(item._id === this.meId) {
@@ -79,23 +79,23 @@ app.service('gameSrvc', function(){
 
   //CHANGE STATE
   this.changeState = (user, command) => {
-    console.log('state and user id before initialize: ', this.state, user._id)
+    // console.log('state and user id before initialize: ', this.state, user._id)
     // initialize user
     if (!this.state[user._id]) {
-      console.log('state before initialize', this.state)
+      // console.log('state before initialize', this.state)
       var row = Math.floor(Math.random()*boardDim);
       var col = Math.floor(Math.random()*boardDim);
       user.row = row; // give random coordinates
       user.col = col; // give random coordinates
       user.type = "player";
-      console.log('creating user at ', user.col, user.row);
+      // console.log('creating user at ', user.col, user.row);
       this.state[user._id] = user;
-      console.log('state after initialize', this.state)
+      // console.log('state after initialize', this.state)
       return this.state;
     }
 
     // this.user = this.state[user._id];
-    console.log('stored user', this.user )
+    // console.log('stored user', this.user )
 
     var action = this.actionDict[command];
     if (!action) return this.state;
@@ -114,7 +114,7 @@ app.service('gameSrvc', function(){
         user.row = (user.row === boardDim-1) ? user.row : user.row + 1;
         break;
       default:
-        console.log('other moves')
+        // console.log('other moves')
     }
     // this.user = user;
     this.state[user._id] = user;
