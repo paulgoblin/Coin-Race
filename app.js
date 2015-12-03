@@ -36,8 +36,6 @@ var io = require('socket.io')(server);
 
 var state = {}; 
 io.on('connection', function(socket) {
-  io.set('match origin protocol', true);
-
   console.log('state on conection: ',state)
   // io.emit('changeState', state);
   socket.on('changeState', function(newState){
