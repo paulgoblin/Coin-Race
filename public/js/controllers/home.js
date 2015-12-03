@@ -38,6 +38,7 @@ app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc,
   $scope.makeMove = function(user, action) {
     console.log('making move')
     socket.emit('changeState', gameSrvc.changeState(user, action), gameSrvc.meId, gameSrvc.coinCollected);
+    gameSrvc.drawBoard(gameSrvc.state);
     gameSrvc.coinCollected = null;
   }
 
