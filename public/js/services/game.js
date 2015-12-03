@@ -4,10 +4,12 @@ app.service('gameSrvc', function(){
 
   this.state = {};
   this.$emptyBoard = null;
-
+  this.meId = null;
+  this.user = null;
+  
   //BOARD PARAMS
   var boardDim = 30;  // number of square per row
-  var squareSize = 2; // in px
+  var squareSize = 2; // in vh
   var squareCss = {
     width: squareSize + 'vh',
     height: squareSize + 'vh'
@@ -36,19 +38,31 @@ app.service('gameSrvc', function(){
     me: {
       attr: 'background-color',
       val: 'red'
+    },
+    player: {
+      attr: 'background-color',
+      val: 'white'
     }
   }
 
   //DRAW BOARD
   this.drawBoard = (state) => {
+    console.log('drawing state', state)
     this.state = state;
     var $newBoard = this.$emptyBoard.clone();
     this.state = state;
     for (var key in this.state) {
       var item = state[key];
+      console.log('drawing item', item, state)
       var row = item.row;
       var col = item.col;
-      $newBoard.find(`#${row}-${col}`).css(this.typeDict[item.type].attr , this.typeDict[item.type].val);
+      if(item._id === this.meId) {
+        this.user = item;
+        var type = "me"
+      } else {
+        var type = item.type; 
+      }
+      $newBoard.find(`#${row}-${col}`).css(this.typeDict[type].attr , this.typeDict[type].val);
     }
     return $newBoard;
   }
@@ -65,17 +79,23 @@ app.service('gameSrvc', function(){
 
   //CHANGE STATE
   this.changeState = (user, command) => {
-
+    console.log('state and user id before initialize: ', this.state, user._id)
+    // initialize user
     if (!this.state[user._id]) {
+      console.log('state before initialize', this.state)
       var row = Math.floor(Math.random()*boardDim);
       var col = Math.floor(Math.random()*boardDim);
       user.row = row; // give random coordinates
       user.col = col; // give random coordinates
-      user.type = 'me';
+      user.type = "player";
       console.log('creating user at ', user.col, user.row);
       this.state[user._id] = user;
+      console.log('state after initialize', this.state)
       return this.state;
     }
+
+    // this.user = this.state[user._id];
+    console.log('stored user', this.user )
 
     var action = this.actionDict[command];
     if (!action) return this.state;
@@ -96,7 +116,7 @@ app.service('gameSrvc', function(){
       default:
         console.log('other moves')
     }
-
+    // this.user = user;
     this.state[user._id] = user;
 
     return this.state;
