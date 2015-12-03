@@ -1,6 +1,18 @@
 <div class="container">
-  <h5>MY COINS:{{user.coins || 0}}</h5>
   <div class="row game" ng-show='showBoard'>
-
   </div>
+  <table class="table table-striped scoreTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Coins</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="player in players">
+        <td>{{player.displayName}}</td>
+        <td>{{player.coins || 0}}</td>
+      </tr>
+    </tbody>
+  </table>
 </div>
