@@ -3,16 +3,15 @@
 app.controller('homeCtrl', function($scope, $rootScope, $http, socket, gameSrvc, userService) {
 
   $scope.showBoard = false;
-  // $scope.user = null;
 
   //initialize user
   userService.get().then(function(resp) {
     // $scope.user = resp.data;
     gameSrvc.user = resp.data;
-    gameSrvc.meId = resp.data._id; 
+    gameSrvc.meId = resp.data._id;
     $scope.showBoard = true;
     socket.emit('requestState')
-  }); 
+  });
 
   socket.on('fulfillRequest', function(state){
     gameSrvc.state = state;

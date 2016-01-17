@@ -1,15 +1,24 @@
-extends ./layout.jade 
+extends ./layout.jade
 
 block content
-  nav(ng-controller='NavCtrl').navbar.navbar-default
-    nav.navbar-header
-      .container-fluid
-        a.navbar-brand(href='#') Social Game
-    div(ng-if='isAuthenticated()')
-      ul.nav.navbar-nav
-        li
-        li
-      form.navbar-form.navbar-left(role='logout')
+  nav(ng-controller='NavCtrl').navbar.navbar-default.navbar-fixed-top
+    .container-fluid
+      a.navbar-brand(href='#') Coin Race
+      form.navbar-form.navbar-right(role='logout' ng-if='isAuthenticated()')
         .form-group
           button.btn.btn-default(ng-click='logout()') Logout
   ui-view
+    
+block scripts
+  script(src="vendor/jquery/dist/jquery.min.js")
+  script(src="vendor/angular/angular.min.js")
+  script(src="vendor/angular-ui-router/release/angular-ui-router.min.js")
+  script(src="vendor/socket.io-client/socket.io.js")
+  script(src="vendor/angular-socket-io/socket.min.js")
+  script(src="vendor/satellizer/satellizer.min.js")
+  script(src='js/module.js')
+  script(src='js/controllers/login.js')
+  script(src='js/controllers/main.js')
+  script(src='js/controllers/home.js')
+  script(src='js/services/game.js')
+  script(src='js/services/user.js')
